@@ -1,31 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useSelector, useDispatch } from "react-redux";  // Import Redux hooks
+import { removeFromFavorites } from "./favoritesSlice";  // Import the Redux action
 import MovieCard from "./MovieCard";  // Reuse the existing MovieCard component
 
-const Favorites = () => {
-  const [favorites, setFavorites] = useState([]);  // State for favorite movies
-
-  // Load favorites from localStorage on component mount
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavorites(storedFavorites);
-  }, []);
-
-  // Save favorites to localStorage whenever favorites state changes
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
-
-  const addToFavorites = (movie) => {
-    setFavorites((prevFavorites) => [...prevFavorites, movie]);
-  };
-
-  const removeFromFavorites = (imdbID) => {
-    setFavorites((prevFavorites) => prevFavorites.filter(movie => movie.imdbID !== imdbID));
-  };
-
-  const isFavorite = (imdbID) => {
-    return favorites.some((movie) => movie.imdbID === imdbID);
-  };
+const FavoritesList = () => {
+  const favorites = useSelector((state) => state.favorites);  // Access the Redux state for favorites
+  const dispatch = useDispatch();  // Dispatch Redux actions
 
   return (
     <div className="mt-8">
@@ -37,7 +17,7 @@ const Favorites = () => {
               key={movie.imdbID} 
               movie={movie} 
               isFavorite={true} 
-              removeFromFavorites={removeFromFavorites} 
+              handleFavoriteClick={() => dispatch(removeFromFavorites(movie.imdbID))}  // Dispatch remove action
             />
           ))}
         </div>
@@ -48,4 +28,4 @@ const Favorites = () => {
   );
 };
 
-export default Favorites;
+export default FavoritesList;
