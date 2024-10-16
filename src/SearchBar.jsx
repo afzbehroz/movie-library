@@ -1,27 +1,16 @@
 import React, { useState, useEffect } from "react";
 import SearchIcon from "./assets/search.svg";
-import MovieCard from "./MovieCard";  
-import Favorites from "./Favorites";  
+import MovieCard from "./MovieCard";  // Import MovieCard component
 
 const API_URL = "http://www.omdbapi.com?apikey=b6003d8a";
 
-const SearchBar = () => {
+const SearchBar = ({ favorites, addToFavorites, removeFromFavorites }) => {
   const [searchTerm, setSearchTerm] = useState("Lego");
   const [movies, setMovies] = useState([]);
-  const [favorites, setFavorites] = useState([]);
 
   useEffect(() => {
     handleSearch();  // Perform the initial search for "Lego"
   }, []);
-
-  useEffect(() => {
-    const storedFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    setFavorites(storedFavorites);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  }, [favorites]);
 
   const handleSearch = async () => {
     if (searchTerm.trim()) {
@@ -29,14 +18,6 @@ const SearchBar = () => {
       const data = await response.json();
       setMovies(data.Search || []);  // Handle case where no movies are found
     }
-  };
-
-  const addToFavorites = (movie) => {
-    setFavorites((prevFavorites) => [...prevFavorites, movie]);
-  };
-
-  const removeFromFavorites = (imdbID) => {
-    setFavorites((prevFavorites) => prevFavorites.filter(movie => movie.imdbID !== imdbID));
   };
 
   const isFavorite = (imdbID) => {
@@ -80,9 +61,6 @@ const SearchBar = () => {
           <h2 className="text-xl text-gray-500">No movies found</h2>
         </div>
       )}
-
-      {/* Render Favorites component */}
-      <Favorites />
     </div>
   );
 };
