@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SearchIcon from "./assets/search.svg";
 import MovieCard from "./MovieCard";  // Import MovieCard component
+import { Helmet } from "react-helmet-async";  // Import Helmet
 
 const API_URL = "http://www.omdbapi.com?apikey=b6003d8a";
 
@@ -25,8 +26,14 @@ const SearchBar = ({ favorites, addToFavorites, removeFromFavorites }) => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-8 text-center">
-      <h1 className="text-4xl font-bold mb-6 text-gray-800">Movie Site</h1>
+    <div className="max-w-4xl mx-auto p-8 text-center mt-16">
+      <Helmet>
+        <title>Search Movies</title>
+        <meta name="description" content="Search for your favorite movies and add them to your favorites list." />
+      </Helmet>
+      
+      <h1 className="text-5xl font-bold mb-6 text-gray-900">Movie Site</h1>
+      <p className="text-gray-600 text-lg mb-8">Search for your favorite movies below</p>
 
       <div className="flex justify-center items-center mb-8">
         <input
@@ -51,8 +58,8 @@ const SearchBar = ({ favorites, addToFavorites, removeFromFavorites }) => {
               key={movie.imdbID} 
               movie={movie} 
               isFavorite={isFavorite(movie.imdbID)}
-              addToFavorites={addToFavorites}
-              removeFromFavorites={removeFromFavorites}
+              addToFavorites={addToFavorites}  // Allow adding to favorites
+              removeFromFavorites={removeFromFavorites}  // Allow removing from favorites
             />
           ))}
         </div>

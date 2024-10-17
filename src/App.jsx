@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";  // Import useState to manage viewFavorites
+// src/App.jsx
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFavorites, saveFavorites, addToFavorites, removeFromFavorites } from "./favoritesSlice";
 import SearchBar from "./SearchBar";
 import FavoritesList from "./FavoritesList";
+import Navbar from "./Navbar";  // Import the new Navbar component
+import { Routes, Route } from "react-router-dom";
+import Profile from "./routes/Profile";  // Import Profile page
 
 const App = () => {
   const [viewFavorites, setViewFavorites] = useState(false);  // Add viewFavorites state
@@ -21,34 +25,29 @@ const App = () => {
 
   return (
     <div>
-      {/* Toggle between SearchBar and FavoritesList */}
-      <div className="flex justify-center my-4">
-        <button
-          onClick={() => setViewFavorites(false)}  // Switch to SearchBar view
-          className={`mx-2 px-4 py-2 rounded ${!viewFavorites ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-        >
-          Search Movies
-        </button>
-        <button
-          onClick={() => setViewFavorites(true)}  // Switch to FavoritesList view
-          className={`mx-2 px-4 py-2 rounded ${viewFavorites ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-700'}`}
-        >
-          View Favorites
-        </button>
-      </div>
+      {/* Use the new Navbar component */}
+      <Navbar />
 
-      {viewFavorites ? (
-        <FavoritesList
-          favorites={favorites}
-          removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
+      {/* Add routing for navigation between pages */}
+      <Routes>
+        <Route 
+          path="/" 
+          element={viewFavorites ? (
+            <FavoritesList
+              favorites={favorites}
+              removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
+            />
+          ) : (
+            <SearchBar
+              favorites={favorites}
+              addToFavorites={(movie) => dispatch(addToFavorites(movie))}
+              removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
+            />
+          )}
         />
-      ) : (
-        <SearchBar
-          favorites={favorites}
-          addToFavorites={(movie) => dispatch(addToFavorites(movie))}
-          removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
-        />
-      )}
+        {/* Add Profile page route */}
+        <Route path="/profile" element={<Profile />} />
+      </Routes>
     </div>
   );
 };

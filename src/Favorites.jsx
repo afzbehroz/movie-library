@@ -1,4 +1,5 @@
 import React from "react";
+import { Helmet } from "react-helmet-async";  // Import Helmet for SEO
 import { useSelector, useDispatch } from "react-redux";  // Import Redux hooks
 import { removeFromFavorites } from "./favoritesSlice";  // Import the Redux action
 import MovieCard from "./MovieCard";  // Reuse the existing MovieCard component
@@ -9,6 +10,12 @@ const FavoritesList = () => {
 
   return (
     <div className="mt-8">
+      {/* Add Helmet for SEO */}
+      <Helmet>
+        <title>Your Favorite Movies</title>
+        <meta name="description" content="Browse your list of favorite movies." />
+      </Helmet>
+
       <h2 className="text-3xl font-bold mb-4 text-gray-800">Favorite Movies</h2>
       {favorites.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
