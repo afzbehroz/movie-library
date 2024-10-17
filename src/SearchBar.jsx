@@ -1,9 +1,11 @@
+// src/SearchBar.jsx
 import React, { useState, useEffect } from "react";
 import SearchIcon from "./assets/search.svg";
 import MovieCard from "./MovieCard";  // Import MovieCard component
 import { Helmet } from "react-helmet-async";  // Import Helmet
 
-const API_URL = "http://www.omdbapi.com?apikey=b6003d8a";
+const API_URL = "https://www.omdbapi.com?apikey=b6003d8a";
+
 
 const SearchBar = ({ favorites, addToFavorites, removeFromFavorites }) => {
   const [searchTerm, setSearchTerm] = useState("Lego");

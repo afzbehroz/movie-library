@@ -1,7 +1,7 @@
 // src/routes/Profile.jsx
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Helmet } from 'react-helmet';  // Import Helmet for SEO
+import { Helmet } from 'react-helmet-async';  // Import Helmet for SEO
 import { removeFromFavorites } from '../favoritesSlice';  // Import the Redux action
 import MovieCard from '../MovieCard';  // Adjust the import based on your file structure
 
@@ -15,14 +15,14 @@ function Profile() {
   };
 
   return (
-    <div>
+    <div className="p-6 max-w-4xl mx-auto">
       {/* Helmet for SEO */}
       <Helmet>
         <title>Your Favorite Movies</title>
         <meta name="description" content="View and manage your favorite movies." />
       </Helmet>
 
-      <h1>Your Favorite Movies</h1>
+      <h1 className="text-3xl font-bold">Your Favorite Movies</h1>
       {favorites.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {favorites.map((movie) => (
