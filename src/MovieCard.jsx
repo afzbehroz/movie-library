@@ -1,12 +1,13 @@
-import React from "react";
+import React from 'react';
+import { Helmet } from 'react-helmet-async';  // Import Helmet for SEO
 
 const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, addToFavorites, removeFromFavorites }) => {
   const handleFavoriteClick = (e) => {
     e.stopPropagation();  // Prevent the click from bubbling up to the card
-    if (isFavorite) {
-      removeFromFavorites(imdbID);  // Remove from favorites
-    } else {
-      addToFavorites({ imdbID, Year, Poster, Title, Type });  // Add to favorites
+    if (isFavorite && removeFromFavorites) {
+      removeFromFavorites(imdbID);  // Remove from favorites if already a favorite
+    } else if (addToFavorites) {
+      addToFavorites({ imdbID, Year, Poster, Title, Type });  // Add to favorites if not already a favorite
     }
   };
 
@@ -15,6 +16,11 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
       className="movie p-6 border border-gray-300 rounded-lg shadow-lg transition-transform duration-200 transform hover:scale-105 bg-white text-gray-800 cursor-pointer"
       onClick={() => console.log("Toggle details here")}  // Add more detail toggling logic if needed
     >
+      <Helmet>
+        <title>{Title} ({Year}) - Movie Details</title>
+        <meta name="description" content={`Details about the movie "${Title}" (${Year}), type: ${Type}.`} />
+      </Helmet>
+      
       <div className="mb-2 text-gray-700">
         <p className="font-medium">{Year}</p>
       </div>
@@ -34,7 +40,7 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
 
       {/* Favorite button */}
       <button
-        onClick={handleFavoriteClick}  // Handle favorites with click
+        onClick={handleFavoriteClick}  // Handle adding/removing from favorites based on context
         className={`mt-4 px-4 py-2 rounded text-white ${isFavorite ? 'bg-red-500' : 'bg-green-500'}`}
       >
         {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
