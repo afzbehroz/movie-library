@@ -1,4 +1,3 @@
-// src/favoritesSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // Async thunk to load favorites from localStorage
@@ -22,6 +21,15 @@ const favoritesSlice = createSlice({
   reducers: {
     addToFavorites: (state, action) => {
       state.list.push(action.payload);
+
+      // Google Analytics event tracking for "Add to Favorites"
+      if (window.gtag) {
+        window.gtag('event', 'add_to_favorites', {
+          event_category: 'Favorites',
+          event_label: action.payload.Title,  // Track movie title
+          value: action.payload.imdbID,       // Track IMDb ID
+        });
+      }
     },
     removeFromFavorites: (state, action) => {
       state.list = state.list.filter(movie => movie.imdbID !== action.payload);
