@@ -72,7 +72,7 @@ TailwindCSS: For styling and responsive design.
 Cypress: For end-to-end testing.
 Google Analytics: For user action tracking.
 
-##Testing
+## Testing
 To run end-to-end tests with Cypress, use the following command:
 ```bash
 npm run test
