@@ -26,6 +26,13 @@ A simple movie library application built with React, Redux Toolkit, and Vite. Th
 1. Clone the repository:
    ```bash
    git clone https://github.com/afzbehroz/movie-library.git
+   ```bash
+2. Navigate to the project directory:
+cd movie-library
+```
+3.Install dependencies:
 ```bash
 npm install
 ```
+
+
