@@ -48,11 +48,11 @@ npm run build
 ```
 This will generate the production-ready files in the dist directory.
 
-##Deployment
+## Deployment
 1. Once the build is complete, you can deploy the app to Vercel or any other static hosting service.
 2. Make sure to set up the proper environment variables and paths for the API requests.
 
-##API Used
+## API Used
 This project uses the OMDB API to fetch movie data.
 
 To get started, register for an API key at OMDB API and add it to your project.
@@ -64,7 +64,7 @@ The app is set up with Google Analytics to track events like adding a movie to t
 ##SEO
 The app uses react-helmet-async for SEO purposes, including adding metadata and descriptions. It also includes a robots.txt file and a sitemap.xml for search engine indexing.
 
-##Technologies Used
+## Technologies Used
 React: A JavaScript library for building user interfaces.
 Redux Toolkit: For state management.
 Vite: A build tool for fast development.
