@@ -1,9 +1,31 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, addToFavorites, removeFromFavorites }) => {
-  const [showDetails, setShowDetails] = useState(false); // State to toggle details visibility
+const API_URL = "https://www.omdbapi.com?apikey=b6003d8a"; // Ensure you have your API key here
 
+const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, addToFavorites, removeFromFavorites }) => {
+  const [showDetails, setShowDetails] = useState(false);
+  const [details, setDetails] = useState(null); // State to store fetched movie details
+  const [loading, setLoading] = useState(false); // State to manage loading status
+
+  // Function to fetch movie details when a movie is clicked
+  const fetchMovieDetails = async () => {
+    setLoading(true);
+    const response = await fetch(`${API_URL}&i=${imdbID}`); // Fetch full details by movie ID
+    const data = await response.json();
+    setDetails(data); // Set the movie details in state
+    setLoading(false);
+  };
+
+  // Toggle details view and fetch details if they haven't been fetched yet
+  const toggleDetails = () => {
+    if (!showDetails && !details) {
+      fetchMovieDetails();
+    }
+    setShowDetails(!showDetails); // Toggle visibility of details
+  };
+
+  // Function to handle favorite toggle
   const handleFavoriteClick = (e) => {
     e.stopPropagation();
     if (isFavorite && removeFromFavorites) {
@@ -11,10 +33,6 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
     } else if (addToFavorites) {
       addToFavorites({ imdbID, Year, Poster, Title, Type });
     }
-  };
-
-  const toggleDetails = () => {
-    setShowDetails(!showDetails); // Toggle the state
   };
 
   return (
@@ -46,18 +64,30 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
 
       {/* Favorite button */}
       <button
-        onClick={handleFavoriteClick}
+        onClick={handleFavoriteClick}  // Handle adding/removing from favorites
         className={`mt-4 px-4 py-2 rounded text-white ${isFavorite ? 'bg-red-500' : 'bg-green-500'}`}
       >
         {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
       </button>
 
+      {/* Loading indicator */}
+      {loading && <p className="mt-4 text-gray-500">Loading...</p>}
+
       {/* Movie details section, shown based on state */}
-      {showDetails && (
+      {showDetails && details && (
         <div className="mt-4 text-gray-700">
-          <p>More details about {Title}...</p>
-          {/* Add actual extra details here, such as plot, cast, etc. */}
+          <p><strong>Plot:</strong> {details.Plot || "No plot available."}</p>
+          <p><strong>Actors:</strong> {details.Actors || "No actors available."}</p>
+          <p><strong>Director:</strong> {details.Director || "No director available."}</p>
+          <p><strong>Runtime:</strong> {details.Runtime || "No runtime available."}</p>
+          <p><strong>Genre:</strong> {details.Genre || "No genre available."}</p>
+          <p><strong>IMDB Rating:</strong> {details.imdbRating || "No rating available."}</p>
         </div>
+      )}
+
+      {/* Message when details are not yet available */}
+      {showDetails && !details && !loading && (
+        <p className="mt-4 text-gray-500">No details available for this movie.</p>
       )}
     </div>
   );
