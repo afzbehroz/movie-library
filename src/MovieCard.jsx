@@ -16,7 +16,7 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
     setDetails(data); // Set the movie details in state
     setLoading(false);
   };
-
+ 
   // Toggle details view and fetch details if they haven't been fetched yet
   const toggleDetails = () => {
     if (!showDetails && !details) {
