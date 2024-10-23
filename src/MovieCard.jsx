@@ -1,20 +1,26 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';  // Import Helmet for SEO
+import React, { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, addToFavorites, removeFromFavorites }) => {
+  const [showDetails, setShowDetails] = useState(false); // State to toggle details visibility
+
   const handleFavoriteClick = (e) => {
-    e.stopPropagation();  // Prevent the click from bubbling up to the card
+    e.stopPropagation();
     if (isFavorite && removeFromFavorites) {
-      removeFromFavorites(imdbID);  // Remove from favorites if already a favorite
+      removeFromFavorites(imdbID);
     } else if (addToFavorites) {
-      addToFavorites({ imdbID, Year, Poster, Title, Type });  // Add to favorites if not already a favorite
+      addToFavorites({ imdbID, Year, Poster, Title, Type });
     }
+  };
+
+  const toggleDetails = () => {
+    setShowDetails(!showDetails); // Toggle the state
   };
 
   return (
     <div 
       className="movie p-6 border border-gray-300 rounded-lg shadow-lg transition-transform duration-200 transform hover:scale-105 bg-white text-gray-800 cursor-pointer"
-      onClick={() => console.log("Toggle details here")}  // Add more detail toggling logic if needed
+      onClick={toggleDetails} // Toggle details on click
     >
       <Helmet>
         <title>{Title} ({Year}) - Movie Details</title>
@@ -40,11 +46,19 @@ const MovieCard = ({ movie: { imdbID, Year, Poster, Title, Type }, isFavorite, a
 
       {/* Favorite button */}
       <button
-        onClick={handleFavoriteClick}  // Handle adding/removing from favorites based on context
+        onClick={handleFavoriteClick}
         className={`mt-4 px-4 py-2 rounded text-white ${isFavorite ? 'bg-red-500' : 'bg-green-500'}`}
       >
         {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
       </button>
+
+      {/* Movie details section, shown based on state */}
+      {showDetails && (
+        <div className="mt-4 text-gray-700">
+          <p>More details about {Title}...</p>
+          {/* Add actual extra details here, such as plot, cast, etc. */}
+        </div>
+      )}
     </div>
   );
 };
