@@ -1,19 +1,17 @@
-// src/App.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadFavorites, saveFavorites, addToFavorites, removeFromFavorites } from "./favoritesSlice";
 import SearchBar from "./SearchBar";
 import FavoritesList from "./FavoritesList";
-import Navbar from "./Navbar";  // Import the new Navbar component
+import Navbar from "./Navbar";
 import { Routes, Route } from "react-router-dom";
-import Profile from "./routes/Profile";  // Import Profile page
+import Profile from "./routes/Profile";
 
 const App = () => {
-  const [viewFavorites, setViewFavorites] = useState(false);  // Add viewFavorites state
   const dispatch = useDispatch();
-  const favorites = useSelector((state) => state.favorites.list);  // Get favorites from Redux state
-
-  // Load favorites from localStorage on mount
+  const favorites = useSelector((state) => state.favorites.list);  // Get favorites list from Redux state
+ 
+  // Load favorites from localStorage when the app mounts
   useEffect(() => {
     dispatch(loadFavorites());
   }, [dispatch]);
@@ -25,27 +23,24 @@ const App = () => {
 
   return (
     <div>
-      {/* Use the new Navbar component */}
+      {/* Render the Navbar component */}
       <Navbar />
 
-      {/* Add routing for navigation between pages */}
+      {/* Set up routing for navigation between pages */}
       <Routes>
-        <Route 
-          path="/" 
-          element={viewFavorites ? (
-            <FavoritesList
-              favorites={favorites}
-              removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
-            />
-          ) : (
+        <Route
+          path="/"
+          element={
             <SearchBar
               favorites={favorites}
               addToFavorites={(movie) => dispatch(addToFavorites(movie))}
               removeFromFavorites={(imdbID) => dispatch(removeFromFavorites(imdbID))}
             />
-          )}
+          }
         />
-        {/* Add Profile page route */}
+        {/* Route for the Favorites List */}
+        <Route path="/favorites" element={<FavoritesList />} />
+        {/* Route for the Profile page */}
         <Route path="/profile" element={<Profile />} />
       </Routes>
     </div>
